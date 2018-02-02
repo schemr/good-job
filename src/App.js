@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import Layout from './hoc/Layout/Layout';
 import Introduce from './components/Introduce/Introduce';
 import Sentences from './components/Sentences/Sentences';
+import NewSentence from './containers/Sentences/Sentences';
 
 class App extends Component {
   render() {
@@ -10,6 +11,7 @@ class App extends Component {
       <div>
         <Layout>
           <Route path="/sentences" component={Sentences} />
+          <Route path="/new" component={NewSentence} />
           <Route path="/" exact component={Introduce} />  
         </Layout>
       </div>
