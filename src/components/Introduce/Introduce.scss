@@ -1,6 +1,7 @@
 .Container {
     margin: 200px auto;
     width: 70%;
+    text-align: center;
 }
 
 .Button {
@@ -10,4 +11,7 @@
     background-color: #00ccff;
     border: 1px solid #00ccff;
     color: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './Sentences.scss'
 import Sentence from './Sentence/Sentence';
+import AddButton from '../UI/AddButton/AddButton';
 
 const datas = [
     {
@@ -30,7 +31,7 @@ const sentences = (props) => (
         {datas.map(data => {
             return <Sentence key={data.id} date={data.date} content={data.content} />
         })}
-        
+        <AddButton />
     </div>
 );
 

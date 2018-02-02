@@ -4,12 +4,11 @@ import classes from './Header.scss';
 const header = () => (
     <header className={classes.Header}>
         <div className={classes.Title}>Good Job!</div>
-        <nav className={classes.Nav}>
+        {/* <nav className={classes.Nav}>
             <ul>
-                <li>Signup</li>
-                <li>Login</li>
+                <li>Logout</li>
             </ul>
-        </nav>
+        </nav> */}
     </header>
 );
 
