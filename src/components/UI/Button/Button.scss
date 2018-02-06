@@ -10,11 +10,6 @@
     font-weight: bold;
 }
 
-.Button:first-of-type {
-    margin-left: 0;
-    padding-left: 0;
-}
-
 .Button:disabled {
     color: #ccc;
     cursor: not-allowed;
@@ -26,4 +21,12 @@
 
 .Danger {
     color: #944317;
+}
+
+.Facebook {
+    background-color: #4967AD;
+}
+
+.Google {
+    background-color: #D95040;
 }
