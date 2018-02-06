@@ -4,6 +4,7 @@ import Layout from './hoc/Layout/Layout';
 import Introduce from './components/Introduce/Introduce';
 import Sentences from './components/Sentences/Sentences';
 import NewSentence from './containers/Sentences/Sentences';
+import Auth from './containers/Auth/Auth';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
         <Layout>
           <Route path="/sentences" component={Sentences} />
           <Route path="/new" component={NewSentence} />
+          <Route path="/auth" component={Auth} />
           <Route path="/" exact component={Introduce} />  
         </Layout>
       </div>
