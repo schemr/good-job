@@ -10,11 +10,13 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 import authReducer from './store/reducers/auth';
+import uiReducer from './store/reducers/ui';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    ui: uiReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
