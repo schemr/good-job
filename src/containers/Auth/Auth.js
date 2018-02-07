@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import classes from './Auth.scss';
 
+import { connect } from 'react-redux';
+import { tryAuth } from '../../store/actions/index';
+
 import InputField from '../../components/UI/InputField/InputField';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Button from '../../components/UI/Button/Button';
@@ -81,26 +84,30 @@ class Auth extends Component {
     }
     submitHandler = ( event ) => {
         event.preventDefault();
-        let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o';
-        if(this.state.authMode === 'signup'){
-            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o'
-        }
-        fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-                email:this.state.controls.email.value,
-                password:this.state.controls.password.value,
-                returnSecureToken: true
-            }),
-            headers:{
-                "Content-Type": "application/json"
-            }
+        const authData = {
+            email:this.state.controls.email.value,
+            password:this.state.controls.password.value
+        };
+        this.props.onTryAuth(authData, this.state.authMode);
+        // let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o';
+        // if(this.state.authMode === 'signup'){
+        //     url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o'
+        // }
+        // fetch(url, {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //         email:this.state.controls.email.value,
+        //         password:this.state.controls.password.value,
+        //         returnSecureToken: true
+        //     }),
+        //     headers:{
+        //         "Content-Type": "application/json"
+        //     }
             
-        })
-            .then(res => res.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err))
-        // this.props.onAuth( this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup );
+        // })
+        //     .then(res => res.json())
+        //     .then(data => console.log(data))
+        //     .catch(err => console.log(err))
     }
     changeAuthModeHandler = () => {
         this.setState({
@@ -134,15 +141,22 @@ class Auth extends Component {
                 touched={formElement.config.touched}
                 changed={(event) => this.inputChangedHandler(event, formElement.id)} />
         ));
+
+        let submitButton = (
+            <Button 
+                btnType="Success" 
+                disabled={!this.state.controls.email.valid || !this.state.controls.password.valid || (!this.state.controls.confirmPassword.valid && this.state.authMode === 'signup')}>SUBMIT</Button>
+        );
+        if(this.props.isLoading) {
+            submitButton = (<Spinner />)
+        }
         
         return (
             <div className={classes.Container}>
                 <h1>{this.state.authMode === 'signup' ? 'SINGUP' : 'LOGIN'}</h1>
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    <Button 
-                        btnType="Success" 
-                        disabled={!this.state.controls.email.valid || !this.state.controls.password.valid || (!this.state.controls.confirmPassword.valid && this.state.authMode === 'signup')}>SUBMIT</Button>
+                    {submitButton}
                 </form>
                 { this.state.authMode === 'signup' ?
                     <div onClick={this.changeAuthModeHandler}>
@@ -157,4 +171,16 @@ class Auth extends Component {
     }
 };
 
-export default Auth;
+const mapStateToProps = state => {
+    return {
+        isLoading: state.ui.isLoading
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
