@@ -89,25 +89,6 @@ class Auth extends Component {
             password:this.state.controls.password.value
         };
         this.props.onTryAuth(authData, this.state.authMode);
-        // let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o';
-        // if(this.state.authMode === 'signup'){
-        //     url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o'
-        // }
-        // fetch(url, {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //         email:this.state.controls.email.value,
-        //         password:this.state.controls.password.value,
-        //         returnSecureToken: true
-        //     }),
-        //     headers:{
-        //         "Content-Type": "application/json"
-        //     }
-            
-        // })
-        //     .then(res => res.json())
-        //     .then(data => console.log(data))
-        //     .catch(err => console.log(err))
     }
     changeAuthModeHandler = () => {
         this.setState({
