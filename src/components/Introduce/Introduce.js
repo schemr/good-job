@@ -10,7 +10,7 @@ const introduce = (props) => (
         </div>
         <Link 
             className={classes.Button} 
-            to="/sentences"
+            to="/auth"
             >시작하기</Link>
     </div>
 )
