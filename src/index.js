@@ -10,12 +10,14 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 import authReducer from './store/reducers/auth';
+import sentenceReducer from './store/reducers/sentence';
 import uiReducer from './store/reducers/ui';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    sentence: sentenceReducer,
     ui: uiReducer
 });
 
