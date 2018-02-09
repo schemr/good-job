@@ -57,3 +57,75 @@ export const authSetToken = (data, expiryDate) => {
         expiryDate: expiryDate
     };
 };
+
+export const authGetToken = () => {
+    return (dispatch, getState) => {
+        const promise = new Promise((resolve, reject) => {
+            const token = getState().auth.data.idToken;
+            const expiryDate = getState().auth.expiryDate;
+            if(!token || new Date(expiryDate) <= new Date()) {
+                let fetchedToken;
+                localStorage.getItem('token')
+                    .catch(err => reject())
+                    .then(tokenFromStorage => {
+                        fetchedToken = tokenFromStorage;
+                        if(!tokenFromStorage){
+                            reject();
+                        }
+                        return localStorage.getItem('expiryDate')
+                    })
+                    .then(expiryDate => {
+                        const parsedExpiryDate = new Date(parseInt(expiryDate));
+                        const now = new Date();
+                        if(parsedExpiryDate > now) {
+                            //dispatch(authSetToken(fetchedToken))
+                            console.log(fetchedToken)
+                            resolve(fetchedToken);
+                        }else{
+                            reject();
+                        }
+                    })
+                    .catch(err => reject());
+            }else{
+                resolve(token);
+            }
+        });
+        return promise.catch(err => {
+            return localStorage.getItem('refreshToken')
+                .then(refreshToken => {
+                    return fetch("https://securetoken.googleapis.com/v1/token?key="+API_KEY, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type" : "application/x-www-from-urlencoded"
+                        },
+                        body: "grant_type=refresh_token&refresh_token="+refreshToken
+                    });
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.id_token) {
+                        console.log("Refresh Token Success")
+                        dispatch(authStoreToken(data));
+                        return data.id_token;
+                    }else{
+                        dispatch(authClearStorage())
+                    }
+                })
+        })
+        .then(token => {
+            if(!token) {
+                throw(new Error());
+            }else{
+                return token;
+            }
+        })
+    }
+}
+
+export const authClearStorage = () => {
+    return dispatch => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('expiryDate');
+        return localStorage.removeItem('refreshToken');
+    }
+};

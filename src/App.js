@@ -21,7 +21,7 @@ class App extends Component {
         <Switch>
           <Route path="/sentences" component={Sentences} />
           <Route path="/new" component={NewSentence} />  
-          <Redirect to="/new" />
+          <Redirect to="/sentences" />
         </Switch>
       )
     }

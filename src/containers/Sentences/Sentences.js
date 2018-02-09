@@ -8,6 +8,7 @@ class Sentences extends Component {
             date: null
         }
     }
+    
     textareaHandler = (event) => {
         this.setState({
             sentence:{
