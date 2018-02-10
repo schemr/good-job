@@ -6,8 +6,13 @@ import Introduce from './components/Introduce/Introduce';
 import Sentences from './components/Sentences/Sentences';
 import NewSentence from './containers/Sentences/Sentences';
 import Auth from './containers/Auth/Auth';
+import * as actions from './store/actions/index';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.onTryAutoSignup();
+  };
+
   render() {
     let routes = (
       <Switch>
@@ -43,7 +48,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // onTryAutoSignup: () => dispatch( actions.authCheckState() )
+    onTryAutoSignup: () => dispatch( actions.authAutoSignIn() )
   };
 };
 

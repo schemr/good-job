@@ -1,4 +1,4 @@
-export { tryAuth, authGetToken } from "./auth";
+export { tryAuth, authGetToken, authAutoSignIn } from "./auth";
 
 export { addSentence, getSentences } from "./sentence"
 

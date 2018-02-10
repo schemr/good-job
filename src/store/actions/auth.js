@@ -1,4 +1,4 @@
-import { AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from './actionTypes';
+import { AUTH_SET_TOKEN, AUTH_LOGOUT } from './actionTypes';
 
 import { uiStartLoading, uiStopLoading } from './index';
 
@@ -42,7 +42,7 @@ export const authStoreToken = (data) => {
     return dispatch => {
         const now = new Date();
         const expiryDate = now.getTime() + data.expiresIn * 1000;
-        dispatch(authSetToken(data, expiryDate));
+        dispatch(authSetToken(data.idToken, expiryDate, data.localId));
         localStorage.setItem('token', data.idToken);
         localStorage.setItem('expiryDate', expiryDate.toString());
         localStorage.setItem('refreshToken', data.refreshToken);
@@ -50,82 +50,68 @@ export const authStoreToken = (data) => {
     }
 };
 
-export const authSetToken = (data, expiryDate) => {
+export const authSetToken = (token, expiryDate, userId) => {
     return {
         type: AUTH_SET_TOKEN,
-        data: data,
-        expiryDate: expiryDate
+        token: token,
+        expiryDate: expiryDate,
+        userId: userId
     };
 };
 
-export const authGetToken = () => {
-    return (dispatch, getState) => {
-        const promise = new Promise((resolve, reject) => {
-            const token = getState().auth.data.idToken;
-            const expiryDate = getState().auth.expiryDate;
-            if(!token || new Date(expiryDate) <= new Date()) {
-                let fetchedToken;
-                localStorage.getItem('token')
-                    .catch(err => reject())
-                    .then(tokenFromStorage => {
-                        fetchedToken = tokenFromStorage;
-                        if(!tokenFromStorage){
-                            reject();
-                        }
-                        return localStorage.getItem('expiryDate')
-                    })
-                    .then(expiryDate => {
-                        const parsedExpiryDate = new Date(parseInt(expiryDate));
-                        const now = new Date();
-                        if(parsedExpiryDate > now) {
-                            //dispatch(authSetToken(fetchedToken))
-                            console.log(fetchedToken)
-                            resolve(fetchedToken);
-                        }else{
-                            reject();
-                        }
-                    })
-                    .catch(err => reject());
-            }else{
-                resolve(token);
-            }
-        });
-        return promise.catch(err => {
-            return localStorage.getItem('refreshToken')
-                .then(refreshToken => {
-                    return fetch("https://securetoken.googleapis.com/v1/token?key="+API_KEY, {
+export const authCheckState = () => {
+    return dispatch => {
+        const fetchedToken = localStorage.getItem('token');
+        const fetchedUserId = localStorage.getItem('userId');
+        if(!fetchedToken) {
+            console.log('Logout')
+            //dispatch(logout());
+        }else {
+            const fetchedExpiryDate = localStorage.getItem('expiryDate');
+            const parsedExpiryDate = new Date(parseInt(fetchedExpiryDate, 10));
+            const now = new Date();
+            if(parsedExpiryDate < now) {
+                const fetchedRefreshToken = localStorage.getItem('refreshToken')
+                fetch("https://securetoken.googleapis.com/v1/token?key="+API_KEY, {
                         method: "POST",
                         headers: {
                             "Content-Type" : "application/x-www-from-urlencoded"
                         },
-                        body: "grant_type=refresh_token&refresh_token="+refreshToken
-                    });
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.id_token) {
-                        console.log("Refresh Token Success")
-                        dispatch(authStoreToken(data));
-                        return data.id_token;
-                    }else{
-                        dispatch(authClearStorage())
-                    }
-                })
-        })
-        .then(token => {
-            if(!token) {
-                throw(new Error());
+                        body: "grant_type=refresh_token&refresh_token="+fetchedRefreshToken
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        if(data.id_token) {
+                            console.log("Refresh Token Success")
+                            dispatch(authStoreToken(data));
+                        }else{
+                            //dispatch(logout())
+                        }
+                    })
             }else{
-                return token;
+                dispatch(authSetToken(fetchedToken, fetchedExpiryDate, fetchedUserId))
             }
-        })
+        }
     }
-}
+};
 
-export const authClearStorage = () => {
+export const authAutoSignIn = () => {
     return dispatch => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('expiryDate');
-        return localStorage.removeItem('refreshToken');
+        dispatch(authCheckState())
+        // .then(token => {
+        //     console.log(token);
+        // })
+        // .catch(err => console.log("Failed to fetch to token"))
+    };
+};
+
+export const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
+    return {
+        type: AUTH_LOGOUT
     }
 };
