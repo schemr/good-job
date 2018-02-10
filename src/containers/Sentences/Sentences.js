@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classes from './Sentences.scss';
+import { addSentence } from '../../store/actions/index';
 
 class Sentences extends Component {
     state = {
@@ -18,18 +20,12 @@ class Sentences extends Component {
         })
     }
     textareaSubmitHandler = (event) => {
-        console.log(this.state)
-        const body = JSON.stringify(this.state.sentence);
-        fetch('https://good-job-ff4ca.firebaseio.com/sentences.json', {
-            method:"POST",
-            body: body,
-            headers: {
-                "Content-Type" : "application/json"
-            }
-        })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
         event.preventDefault();
+        const sentence = {
+            ...this.state.sentence,
+            userId: this.props.userId
+        };
+        this.props.onSaveSentence(sentence, this.props.token)
     }
     render() {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -44,4 +40,17 @@ class Sentences extends Component {
     }
 };
 
-export default Sentences;
+const mapStateToProps = state => {
+    return {
+        userId: state.auth.userId,
+        token: state.auth.token
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSaveSentence: (sentence, token) => dispatch(addSentence(sentence, token))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sentences);

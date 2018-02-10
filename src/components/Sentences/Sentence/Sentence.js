@@ -4,7 +4,7 @@ import classes from './Sentence.scss';
 const sentence = (props) => (
     <div className={classes.Sentence}>
         <div className={classes.Sentence__date}>
-            {props.date.toLocaleDateString()}
+            {props.date}
         </div>
         <div className={classes.Sentence__content}>
             <div>

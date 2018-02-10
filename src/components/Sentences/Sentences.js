@@ -9,14 +9,14 @@ import { getSentences } from '../../store/actions/index';
 
 class SentencesList extends Component {
     componentDidMount() {
-        this.props.onLoadSentences;
+        this.props.onFetchSentences(this.props.token, this.props.userId);
     }
     render() {
         return (
             <div className={classes.Sentences}>
-                {/* {this.sentences.map(sentence => {
-                    return <Sentence key={sentence.date} date={sentence.date} content={sentence.content} />
-                })} */}
+                {this.props.sentences.map(sentence => {
+                    return <Sentence key={sentence.id} date={sentence.date} content={sentence.content} />
+                })}
                 <AddButton />
             </div>
         )
@@ -25,13 +25,15 @@ class SentencesList extends Component {
 
 const mapStateToProps = state => {
     return {
-        sentences: state.sentence.sentences
+        sentences: state.sentence.sentences,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLoadSentences: () => dispatch(getSentences())
+        onFetchSentences: (token, userId) => dispatch(getSentences(token, userId))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SentencesList);

@@ -2,17 +2,13 @@ import { SET_SENTENCES } from './actionTypes';
 
 import { uiStartLoading, uiStopLoading, authGetToken } from './index';
 
-export const addSentence = (sentence) => {
+export const addSentence = (sentence, token) => {
     return dispatch => {
-        let authToken;
         dispatch(uiStartLoading());
-        dispatch(authGetToken())
-            .catch(()=>console.log('No valid token'))
-            .then(token => {
-                authToken = token;
-                return fetch('https://good-job-ff4ca.firebaseio.com/sentences.json?auth='+authToken, {
+        console.log(sentence)
+        fetch('https://good-job-ff4ca.firebaseio.com/sentences.json?auth='+token, {
                     method:"POST",
-                    body: sentence,
+                    body: JSON.stringify(sentence),
                     headers: {
                         "Content-Type" : "application/json"
                     }
@@ -26,23 +22,24 @@ export const addSentence = (sentence) => {
                     console.log(err);
                     dispatch(uiStopLoading());
                 })
-            })
     }
 }
 
-export const getSentences = () => {
+export const getSentences = (token, userId) => {
     return dispatch => {
-        dispatch(authGetToken())
-            .then(token => {
-                return fetch("https://good-job-ff4ca.firebaseio.com/sentences.json?auth="+token)
-            })
-            .catch(() => {
-                console.log("No Valid Token")
-            })
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        fetch("https://good-job-ff4ca.firebaseio.com/sentences.json" + queryParams)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                dispatch(setSentence(data));
+                const fetchedOrders = [];
+                for ( let key in data ) {
+                    fetchedOrders.push( {
+                        ...data[key],
+                        id: key
+                    } );
+                }
+                dispatch(setSentence(fetchedOrders));
             })
             .catch(err => {
                 console.log(err);
