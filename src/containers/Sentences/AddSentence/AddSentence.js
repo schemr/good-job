@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classes from './Sentences.scss';
-import { addSentence } from '../../store/actions/index';
+import classes from './AddSentence.scss';
+import { addSentence } from '../../../store/actions/index';
 
 class Sentences extends Component {
     state = {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import classes from './Sentences.scss'
-import Sentence from './Sentence/Sentence';
-import AddButton from '../UI/AddButton/AddButton';
+import classes from './SentenceList.scss'
+import Sentence from '../../../components/Sentence/Sentence';
+import AddButton from '../../../components/UI/AddButton/AddButton';
 import { connect } from 'react-redux';
 
-import { getSentences } from '../../store/actions/index';
+import { getSentences } from '../../../store/actions/index';
 
 
 class SentencesList extends Component {
@@ -35,5 +35,6 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchSentences: (token, userId) => dispatch(getSentences(token, userId))
     }
-}
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(SentencesList);

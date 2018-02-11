@@ -3,8 +3,8 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
 import Introduce from './components/Introduce/Introduce';
-import Sentences from './components/Sentences/Sentences';
-import NewSentence from './containers/Sentences/Sentences';
+import SentenceList from './containers/Sentences/SentenceList/SentenceList';
+import AddSentence from './containers/Sentences/AddSentence/AddSentence';
 import Auth from './containers/Auth/Auth';
 import * as actions from './store/actions/index';
 
@@ -24,8 +24,8 @@ class App extends Component {
     if(this.props.isAuthenticated) {
       routes = (
         <Switch>
-          <Route path="/sentences" component={Sentences} />
-          <Route path="/new" component={NewSentence} />  
+          <Route path="/sentences" component={SentenceList} />
+          <Route path="/new" component={AddSentence} />  
           <Redirect to="/sentences" />
         </Switch>
       )
