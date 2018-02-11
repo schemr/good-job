@@ -1,6 +1,6 @@
 import { SET_SENTENCES } from './actionTypes';
 
-import { uiStartLoading, uiStopLoading, authGetToken } from './index';
+import { uiStartLoading, uiStopLoading } from './index';
 
 export const addSentence = (sentence, token) => {
     return dispatch => {
