@@ -32,21 +32,21 @@ export const tryAuth = (authData, authMode) => {
             if(!data.idToken) {
                 alert("Authentication failed :" + data.error.message)
             }else{
-                dispatch(authStoreToken(data));
+                dispatch(authStoreToken(data.idToken, data.refreshToken, data.localId, data.expiresIn));
             }
         });
     }
 }
 
-export const authStoreToken = (data) => {
+export const authStoreToken = (token, refreshToken, userId, expiresIn) => {
     return dispatch => {
         const now = new Date();
-        const expiryDate = now.getTime() + data.expiresIn * 1000;
-        dispatch(authSetToken(data.idToken, expiryDate, data.localId));
-        localStorage.setItem('token', data.idToken);
+        const expiryDate = now.getTime() + expiresIn * 1000;
+        dispatch(authSetToken(token, expiryDate, userId));
+        localStorage.setItem('token', token);
         localStorage.setItem('expiryDate', expiryDate.toString());
-        localStorage.setItem('refreshToken', data.refreshToken);
-        localStorage.setItem('userId', data.localId);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('userId', userId);
     }
 };
 
@@ -75,7 +75,7 @@ export const authCheckState = () => {
                 fetch("https://securetoken.googleapis.com/v1/token?key="+API_KEY, {
                         method: "POST",
                         headers: {
-                            "Content-Type" : "application/x-www-from-urlencoded"
+                            "Content-Type": "application/x-www-form-urlencoded"
                         },
                         body: "grant_type=refresh_token&refresh_token="+fetchedRefreshToken
                     })
@@ -84,7 +84,7 @@ export const authCheckState = () => {
                         console.log(data);
                         if(data.id_token) {
                             console.log("Refresh Token Success")
-                            dispatch(authStoreToken(data));
+                            dispatch(authStoreToken(data.id_token, data.refresh_token, data.user_id, data.expires_in));
                         }else{
                             //dispatch(logout())
                         }
