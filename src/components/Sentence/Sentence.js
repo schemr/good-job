@@ -1,15 +1,18 @@
 import React from 'react';
 import classes from './Sentence.scss';
+import SentenceDate from './SentenceDate/SentenceDate';
+import SentenceContent from './SentenceContent/SentenceContent';
 
 const sentence = (props) => (
     <div className={classes.Sentence}>
-        <div className={classes.Sentence__date}>
-            {props.date}
-        </div>
+        <SentenceDate date={props.date} />
+        
         <div className={classes.Sentence__content}>
-            <div>
-                {props.content}
-            </div>
+            {
+                props.content.map(s=>{
+                    return <SentenceContent key={s.id} content={s.content} />;
+                })
+            }
         </div>
     </div>
 );

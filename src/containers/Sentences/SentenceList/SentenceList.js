@@ -15,7 +15,7 @@ class SentencesList extends Component {
         return (
             <div className={classes.Sentences}>
                 {this.props.sentences.map(sentence => {
-                    return <Sentence key={sentence.id} date={sentence.date} content={sentence.content} />
+                    return <Sentence key={sentence.date} date={sentence.date} content={sentence.sentence} />
                 })}
                 <AddButton />
             </div>
