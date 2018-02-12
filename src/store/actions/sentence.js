@@ -2,11 +2,11 @@ import { SET_SENTENCES } from './actionTypes';
 
 import { uiStartLoading, uiStopLoading } from './index';
 
-export const addSentence = (sentence, token) => {
+export const addSentence = (sentence, userId, token) => {
     return dispatch => {
         dispatch(uiStartLoading());
         console.log(sentence)
-        fetch('https://good-job-ff4ca.firebaseio.com/sentences.json?auth='+token, {
+        fetch('https://good-job-ff4ca.firebaseio.com/sentences/'+userId+'/'+sentence.displayDate+'.json?auth='+token, {
                     method:"POST",
                     body: JSON.stringify(sentence),
                     headers: {
@@ -27,19 +27,26 @@ export const addSentence = (sentence, token) => {
 
 export const getSentences = (token, userId) => {
     return dispatch => {
-        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
-        fetch("https://good-job-ff4ca.firebaseio.com/sentences.json" + queryParams)
+        const queryParams = '?auth=' + token;
+        fetch("https://good-job-ff4ca.firebaseio.com/sentences/"+userId+".json"+queryParams)
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                const fetchedOrders = [];
+                const fetchedData = [];
                 for ( let key in data ) {
-                    fetchedOrders.push( {
-                        ...data[key],
-                        id: key
-                    } );
+                    const fetchedSentence = [];
+                    for( let k in data[key]){
+                        fetchedSentence.push( {
+                            ...data[key][k],
+                            id: k
+                        } );
+                    }
+                    fetchedData.push({
+                        sentence: fetchedSentence,
+                        date: key
+                    })
                 }
-                dispatch(setSentence(fetchedOrders));
+                console.log(fetchedData)
+                dispatch(setSentence(fetchedData));
             })
             .catch(err => {
                 console.log(err);

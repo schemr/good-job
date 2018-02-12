@@ -7,15 +7,19 @@ class Sentences extends Component {
     state = {
         sentence: {
             content: '',
-            date: null
+            date: null,
+            displayDate: null
         }
     }
     
     textareaHandler = (event) => {
+        const date = new Date();
+        const displayDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
         this.setState({
             sentence:{
                 content: event.target.value,
-                date: new Date()
+                date: date,
+                displayDate: displayDate
             }
         })
     }
@@ -25,7 +29,7 @@ class Sentences extends Component {
             ...this.state.sentence,
             userId: this.props.userId
         };
-        this.props.onSaveSentence(sentence, this.props.token)
+        this.props.onSaveSentence(sentence, this.props.userId, this.props.token)
     }
     render() {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -49,7 +53,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSaveSentence: (sentence, token) => dispatch(addSentence(sentence, token))
+        onSaveSentence: (sentence, userId, token) => dispatch(addSentence(sentence, userId, token))
     };
 };
 
