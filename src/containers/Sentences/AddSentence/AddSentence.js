@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classes from './AddSentence.scss';
 import { addSentence } from '../../../store/actions/index';
+import Button from '../../../components/UI/Button/Button';
 
 class Sentences extends Component {
     state = {
@@ -31,6 +32,10 @@ class Sentences extends Component {
         };
         this.props.onSaveSentence(sentence, this.props.userId, this.props.token)
     }
+    cancleHandler = (event) => {
+        event.preventDefault();
+        this.props.history.goBack();
+    }
     render() {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         return (
@@ -38,7 +43,8 @@ class Sentences extends Component {
                 <h2 className={classes.Date}>{new Date().toLocaleDateString('ko-KR', options)}</h2>
                 <textarea className={classes.TextArea} placeholder="잘한일을 입력해주세요" value={this.state.sentence.content}
                 onChange={this.textareaHandler}></textarea>
-                <button type="submit" className={classes.Button}>저장</button>
+                <Button btnType="Success" className={classes.Button} clicked={this.textareaSubmitHandler}>저장</Button>
+                <Button btnType="Danger" clicked={this.cancleHandler}>취소</Button>
             </form>
         )
     }
