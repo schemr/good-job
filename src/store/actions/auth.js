@@ -65,7 +65,7 @@ export const authCheckState = () => {
         const fetchedUserId = localStorage.getItem('userId');
         if(!fetchedToken) {
             console.log('Logout')
-            //dispatch(logout());
+            dispatch(logout());
         }else {
             const fetchedExpiryDate = localStorage.getItem('expiryDate');
             const parsedExpiryDate = new Date(parseInt(fetchedExpiryDate, 10));
@@ -86,7 +86,7 @@ export const authCheckState = () => {
                             console.log("Refresh Token Success")
                             dispatch(authStoreToken(data.id_token, data.refresh_token, data.user_id, data.expires_in));
                         }else{
-                            //dispatch(logout())
+                            dispatch(logout())
                         }
                     })
             }else{
@@ -94,16 +94,6 @@ export const authCheckState = () => {
             }
         }
     }
-};
-
-export const authAutoSignIn = () => {
-    return dispatch => {
-        dispatch(authCheckState())
-        // .then(token => {
-        //     console.log(token);
-        // })
-        // .catch(err => console.log("Failed to fetch to token"))
-    };
 };
 
 export const logout = () => {
