@@ -6,7 +6,7 @@ import Introduce from './components/Introduce/Introduce';
 import SentenceList from './containers/Sentences/SentenceList/SentenceList';
 import AddSentence from './containers/Sentences/AddSentence/AddSentence';
 import Auth from './containers/Auth/Auth';
-import * as actions from './store/actions/index';
+import { authCheckState } from './store/actions/index';
 
 class App extends Component {
   componentDidMount() {
@@ -48,9 +48,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch( actions.authAutoSignIn() )
+    onTryAutoSignup: () => dispatch( authCheckState() )
   };
 };
 
 export default withRouter( connect( mapStateToProps, mapDispatchToProps )( App ) );
-
