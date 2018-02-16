@@ -22,10 +22,6 @@ export const tryAuth = (authData, authMode) => {
                 "Content-Type": "application/json"
             }
         })
-        .catch(err => {
-            console.log("Authentication failed", err);
-            dispatch(uiStopLoading());
-        })
         .then(res => res.json())
         .then(data => {
             dispatch(uiStopLoading());
@@ -33,7 +29,12 @@ export const tryAuth = (authData, authMode) => {
                 alert("Authentication failed :" + data.error.message)
             }else{
                 dispatch(authStoreToken(data.idToken, data.refreshToken, data.localId, data.expiresIn));
+                dispatch(checkAuthTimeout(data.expiresIn));
             }
+        })
+        .catch(err => {
+            console.log("Authentication failed", err);
+            dispatch(uiStopLoading());
         });
     }
 }
@@ -59,6 +60,14 @@ export const authSetToken = (token, expiryDate, userId) => {
     };
 };
 
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(updateAuth());
+        }, expirationTime * 1000);
+    };
+};
+
 export const authCheckState = () => {
     return dispatch => {
         const fetchedToken = localStorage.getItem('token');
@@ -71,28 +80,35 @@ export const authCheckState = () => {
             const parsedExpiryDate = new Date(parseInt(fetchedExpiryDate, 10));
             const now = new Date();
             if(parsedExpiryDate < now) {
-                const fetchedRefreshToken = localStorage.getItem('refreshToken')
-                fetch("https://securetoken.googleapis.com/v1/token?key="+API_KEY, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "grant_type=refresh_token&refresh_token="+fetchedRefreshToken
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data);
-                        if(data.id_token) {
-                            console.log("Refresh Token Success")
-                            dispatch(authStoreToken(data.id_token, data.refresh_token, data.user_id, data.expires_in));
-                        }else{
-                            dispatch(logout())
-                        }
-                    })
+                dispatch(updateAuth());
             }else{
                 dispatch(authSetToken(fetchedToken, fetchedExpiryDate, fetchedUserId))
             }
         }
+    }
+};
+
+export const updateAuth = () => {
+    return dispatch => {
+        const fetchedRefreshToken = localStorage.getItem('refreshToken')
+        fetch("https://securetoken.googleapis.com/v1/token?key="+API_KEY, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "grant_type=refresh_token&refresh_token="+fetchedRefreshToken
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if(data.id_token) {
+                    console.log("Refresh Token Success")
+                    dispatch(authStoreToken(data.id_token, data.refresh_token, data.user_id, data.expires_in));
+                    dispatch(checkAuthTimeout(data.expires_in));
+                }else{
+                    dispatch(logout())
+                }
+            })
     }
 };
 
