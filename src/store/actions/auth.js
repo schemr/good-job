@@ -62,6 +62,7 @@ export const authSetToken = (token, expiryDate, userId) => {
 
 export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
+        console.log('Timeout', expirationTime)
         setTimeout(() => {
             dispatch(updateAuth());
         }, expirationTime * 1000);
@@ -82,6 +83,8 @@ export const authCheckState = () => {
             if(parsedExpiryDate < now) {
                 dispatch(updateAuth());
             }else{
+                const expirationTime = (fetchedExpiryDate - now.getTime()) / 1000
+                dispatch(checkAuthTimeout(Math.floor(expirationTime)));
                 dispatch(authSetToken(fetchedToken, fetchedExpiryDate, fetchedUserId))
             }
         }
