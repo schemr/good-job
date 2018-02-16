@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import classes from './Layout.scss'
+import { connect } from 'react-redux';
+import classes from './Layout.scss';
 import Aux from '../Aux/Aux';
 import Header from '../../components/Header/Header';
 
@@ -7,7 +8,7 @@ class Layout extends Component {
     render(){
         return (
             <Aux>
-                <Header />
+                <Header isAuth={this.props.isAuthenticated} />
                 <main className={classes.Container}>
                     {this.props.children}
                 </main>
@@ -16,4 +17,11 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token !== null
+    };
+};
+
+
+export default connect(mapStateToProps)(Layout);
