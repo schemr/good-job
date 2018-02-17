@@ -1,8 +1,8 @@
 import { AUTH_SET_TOKEN, AUTH_LOGOUT } from './actionTypes';
-
 import { uiStartLoading, uiStopLoading } from './index';
+import config from '../../config';
 
-const API_KEY = 'AIzaSyDH_tgMb-5unnGs1OAgwpobaVTroqdk36o'
+const API_KEY = config.apiKey;
 
 export const tryAuth = (authData, authMode) => {
     return dispatch => {

@@ -1,5 +1,4 @@
 import { SET_SENTENCES } from './actionTypes';
-
 import { uiStartLoading, uiStopLoading } from './index';
 
 export const addSentence = (sentence, userId, token) => {
