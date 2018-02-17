@@ -13,39 +13,40 @@ class Sentences extends Component {
         }
     }
     
-    textareaHandler = (event) => {
+    editChangeHandler = (event) => {
         const date = new Date();
         const displayDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
         this.setState({
             sentence:{
-                content: event.target.value,
+                content: event.currentTarget.textContent,
                 date: date,
                 displayDate: displayDate
             }
         })
     }
-    textareaSubmitHandler = (event) => {
-        event.preventDefault();
+    editSubmitHandler = () => {
         const sentence = {
             ...this.state.sentence,
             userId: this.props.userId
         };
         this.props.onSaveSentence(sentence, this.props.userId, this.props.token)
     }
-    cancleHandler = (event) => {
-        event.preventDefault();
+    editCancleHandler = () => {
         this.props.history.goBack();
     }
     render() {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         return (
-            <form onSubmit={this.textareaSubmitHandler} className={classes.Sentences}>
+            <div>
                 <h2 className={classes.Date}>{new Date().toLocaleDateString('ko-KR', options)}</h2>
-                <textarea className={classes.TextArea} placeholder="잘한일을 입력해주세요" value={this.state.sentence.content}
-                onChange={this.textareaHandler}></textarea>
-                <Button btnType="Success" className={classes.Button} clicked={this.textareaSubmitHandler}>저장</Button>
-                <Button btnType="Danger" clicked={this.cancleHandler}>취소</Button>
-            </form>
+                <div 
+                    className={classes.InnerEdit} 
+                    contentEditable="true" 
+                    placeholder="잘한일을 입력해주세요"
+                    onKeyUp={this.editChangeHandler}></div>
+                <Button btnType="Success" className={classes.Button} clicked={this.editSubmitHandler}>저장</Button>
+                <Button btnType="Danger" clicked={this.editCancleHandler}>취소</Button>
+            </div>
         )
     }
 };
