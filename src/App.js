@@ -6,6 +6,7 @@ import Introduce from './components/Introduce/Introduce';
 import SentenceList from './containers/Sentences/SentenceList/SentenceList';
 import AddSentence from './containers/Sentences/AddSentence/AddSentence';
 import Auth from './containers/Auth/Auth';
+import Logout from './containers/Auth/Logout/Logout';
 import { authCheckState } from './store/actions/index';
 
 class App extends Component {
@@ -25,7 +26,8 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/sentences" component={SentenceList} />
-          <Route path="/new" component={AddSentence} />  
+          <Route path="/new" component={AddSentence} />
+          <Route path="/logout" component={Logout} />  
           <Redirect to="/sentences" />
         </Switch>
       )
