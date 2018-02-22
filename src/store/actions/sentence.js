@@ -6,7 +6,7 @@ export const addSentence = (sentence, userId, token) => {
         dispatch(uiStartLoading());
         console.log(sentence)
         // Todo Data structure change 
-        fetch('https://good-job-ff4ca.firebaseio.com/sentences/'+userId+'/'+sentence.displayDate+'.json?auth='+token, {
+        fetch('https://good-job-ff4ca.firebaseio.com/sentences/'+userId+'/.json?auth='+token, {
                     method:"POST",
                     body: JSON.stringify(sentence),
                     headers: {
@@ -27,27 +27,20 @@ export const addSentence = (sentence, userId, token) => {
 
 export const getSentences = (token, userId) => {
     return dispatch => {
-        const queryParams = '?auth=' + token;
+        const queryParams = '?auth=' + token +'&orderBy="displayDate"&limitToLast=2';
         // Todo Data structure change 
         fetch("https://good-job-ff4ca.firebaseio.com/sentences/"+userId+".json"+queryParams)
             .then(res => res.json())
             .then(data => {
                 const fetchedData = [];
                 for ( let key in data ) {
-                    const fetchedSentence = [];
-                    for( let k in data[key]){
-                        fetchedSentence.push( {
-                            ...data[key][k],
-                            id: k
-                        } );
-                    }
                     fetchedData.push({
-                        sentence: fetchedSentence,
-                        date: key
+                        ...data[key],
+                        id: key
                     })
                 }
                 console.log(fetchedData)
-                dispatch(setSentence(fetchedData));
+                dispatch(setSentence(fetchedData.reverse()));
             })
             .catch(err => {
                 console.log(err);
