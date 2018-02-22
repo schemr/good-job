@@ -44,8 +44,10 @@ class Sentences extends Component {
                     contentEditable="true" 
                     placeholder="잘한일을 입력해주세요"
                     onKeyUp={this.editChangeHandler}></div>
-                <Button btnType="Success" className={classes.Button} clicked={this.editSubmitHandler}>저장</Button>
-                <Button btnType="Danger" clicked={this.editCancleHandler}>취소</Button>
+                <div className={classes.ButtonSet}>
+                    <Button btnType="Success" className={classes.Button} clicked={this.editSubmitHandler}>저장</Button>
+                    <Button btnType="Danger" clicked={this.editCancleHandler}>취소</Button>
+                </div>
             </div>
         )
     }

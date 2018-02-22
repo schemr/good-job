@@ -9,22 +9,19 @@
     text-align: center;
 }
 
-.TextArea {
-    width: 100%;
+.InnerEdit {
+    width: 80%;
     height: 400px;
     font-size: 20px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.Button {
-    padding: 10px;
-    margin: 20px auto;
-    text-align: center;
-    background-color: #00ccff;
-    border: 1px solid #00ccff;
-    color: #ffffff;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
+.ButtonSet {
+    text-align: right;
+    margin-right: 40px;
 }
 
 [contenteditable=true]:empty:before{
