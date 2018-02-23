@@ -4,12 +4,16 @@ import Sentence from '../../../components/Sentence/Sentence';
 import AddButton from '../../../components/UI/AddButton/AddButton';
 import { connect } from 'react-redux';
 
-import { getSentences } from '../../../store/actions/index';
+import { getSentences, addInit } from '../../../store/actions/index';
 
 
 class SentencesList extends Component {
     componentDidMount() {
         this.props.onFetchSentences(this.props.token, this.props.userId);
+    }
+    onAddedHandler = () => {
+        this.props.onAddSentence();
+        this.props.history.push('/new');
     }
     render() {
         return (
@@ -17,7 +21,7 @@ class SentencesList extends Component {
                 {this.props.sentences.map(sentence => {
                     return <Sentence key={sentence.id} date={sentence.displayDate} content={sentence.content} />
                 })}
-                <AddButton />
+                <AddButton addedButton={this.onAddedHandler}/>
             </div>
         )
     }
@@ -33,7 +37,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchSentences: (token, userId) => dispatch(getSentences(token, userId))
+        onFetchSentences: (token, userId) => dispatch(getSentences(token, userId)),
+        onAddSentence: () => dispatch(addInit())
     }
 };
 

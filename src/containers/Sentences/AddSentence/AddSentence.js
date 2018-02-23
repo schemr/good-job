@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import classes from './AddSentence.scss';
 import { addSentence } from '../../../store/actions/index';
 import Button from '../../../components/UI/Button/Button';
@@ -36,7 +37,7 @@ class Sentences extends Component {
     }
     render() {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        return (
+        let sentence = (
             <div>
                 <h2 className={classes.Date}>{new Date().toLocaleDateString('ko-KR', options)}</h2>
                 <div 
@@ -49,14 +50,21 @@ class Sentences extends Component {
                     <Button btnType="Danger" clicked={this.editCancleHandler}>취소</Button>
                 </div>
             </div>
-        )
+        );
+
+        if(this.props.addedSentence) {
+            sentence = <Redirect to="/sentences" />
+        }
+        
+        return sentence
     }
 };
 
 const mapStateToProps = state => {
     return {
         userId: state.auth.userId,
-        token: state.auth.token
+        token: state.auth.token,
+        addedSentence: state.sentence.addedSentence
     };
 };
 
