@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classes from './AddButton.scss';
 
-const addButton = () => (
+const addButton = (props) => (
     <div className={classes.addButton}>
-        <Link to="/new">+</Link>
+        <button onClick={props.addedButton}>+</button>
     </div>
 );
 
