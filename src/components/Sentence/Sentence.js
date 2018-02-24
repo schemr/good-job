@@ -9,7 +9,10 @@ const sentence = (props) => (
         
         <div className={classes.Sentence__content}>
             {
-                <SentenceContent key={props.id} content={props.content} />
+                props.content.map(a => {
+                    return <SentenceContent key={a.id} content={a.content} />
+                })
+                
             }
         </div>
     </div>
