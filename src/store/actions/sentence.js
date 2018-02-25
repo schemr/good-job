@@ -6,7 +6,7 @@ export const addSentence = (sentence, userId, token) => {
         dispatch(uiStartLoading());
         console.log(sentence)
         // Todo Data structure change 
-        fetch('https://good-job-ff4ca.firebaseio.com/sentences/'+userId+'/.json?auth='+token, {
+        fetch('https://good-job-ff4ca.firebaseio.com/sentences/'+userId+'/'+sentence.displayDate+'.json?auth='+token, {
                     method:"POST",
                     body: JSON.stringify(sentence),
                     headers: {
@@ -28,7 +28,7 @@ export const addSentence = (sentence, userId, token) => {
 
 export const getSentences = (token, userId) => {
     return dispatch => {
-        const queryParams = '?auth=' + token +'&orderBy="displayDate"&limitToLast=5';
+        const queryParams = '?auth=' + token +'&orderBy="$key"&limitToLast=5';
         // Todo Data structure change 
         fetch("https://good-job-ff4ca.firebaseio.com/sentences/"+userId+".json"+queryParams)
             .then(res => res.json())
@@ -38,43 +38,19 @@ export const getSentences = (token, userId) => {
                     dispatch(authCheckState())
                 }else{
                     const fetchedData = [];
-                    const dateObj = {};
-                    let objLength = Object.keys(data).length;
                     for ( let key in data ) {
-                        objLength--;
-                        if(!dateObj.date){
-                            dateObj.date = data[key].displayDate
-                            dateObj.sentence = [{
-                                ...data[key],
-                                id: key
-                            }]
-                        }else{
-                            if(dateObj.date === data[key].displayDate){
-                                dateObj.sentence.push({
-                                    ...data[key],
-                                    id: key
-                                })
-                                if(objLength === 0){
-                                    fetchedData.push(Object.assign({}, dateObj))
-                                }
-                            }else{
-                                fetchedData.push(Object.assign({}, dateObj))
-                                dateObj.date = data[key].displayDate;
-                                dateObj.sentence = [{
-                                    ...data[key],
-                                    id: key
-                                }]
-                            }
+                        const fetchedSentence = [];
+                        for( let k in data[key]){
+                            fetchedSentence.push( {
+                                ...data[key][k],
+                                id: k
+                            });
                         }
-                        // fetchedData.push({
-                        //     date:data[key].displayDate,
-                        //     sentence: [{
-                        //         ...data[key],
-                        //         id: key
-                        //     }]
-                        // })
-                    } 
-
+                        fetchedData.push({
+                            sentence: fetchedSentence,
+                            date: key
+                        })
+                    }
                     console.log(fetchedData)
                     dispatch(setSentence(fetchedData.reverse()));
                 }
