@@ -1,15 +1,16 @@
 .addButton {
     position: fixed;
+    width: 60px;
+    height: 60px;
     right: 50px;
     bottom: 50px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 3px #999;
+    background-color: skyblue;
+    text-align: center;
     button{
-        text-decoration: none;
-        padding: 6px 15px;
-        border: 1px solid skyblue;
-        border-radius: 50%;
-        background-color: skyblue;
         color: #ffffff;
-        display: inline-block;
         font-size: 28px;
+        margin-top: 9px;
     }
 }
