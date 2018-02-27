@@ -1,8 +1,9 @@
 import React from 'react';
+import classes from './SentenceContent.scss';
 
 const sentenceContent = (props) => (
-    <div>
-        {props.content}
+    <div className={classes.Content}>
+        <i className="fa fa-thumbs-up"></i>{props.content}
     </div>
 );
 
