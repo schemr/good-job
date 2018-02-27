@@ -5,7 +5,6 @@ export const addSentence = (sentence, userId, token) => {
     return dispatch => {
         dispatch(uiStartLoading());
         console.log(sentence)
-        // Todo Data structure change 
         fetch('https://good-job-ff4ca.firebaseio.com/sentences/'+userId+'/'+sentence.displayDate+'.json?auth='+token, {
                     method:"POST",
                     body: JSON.stringify(sentence),
@@ -28,8 +27,7 @@ export const addSentence = (sentence, userId, token) => {
 
 export const getSentences = (token, userId) => {
     return dispatch => {
-        const queryParams = '?auth=' + token +'&orderBy="$key"&limitToLast=5';
-        // Todo Data structure change 
+        const queryParams = '?auth=' + token +'&orderBy="$key"&limitToLast=10';
         fetch("https://good-job-ff4ca.firebaseio.com/sentences/"+userId+".json"+queryParams)
             .then(res => res.json())
             .then(data => {
