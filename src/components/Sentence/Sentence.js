@@ -3,10 +3,11 @@ import classes from './Sentence.scss';
 import SentenceDate from './SentenceDate/SentenceDate';
 import SentenceContent from './SentenceContent/SentenceContent';
 
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
 const sentence = (props) => (
     <div className={classes.Sentence}>
-        <SentenceDate date={props.date} />
-        
+        <SentenceDate date={new Date(props.date).toLocaleDateString('ko-KR', options)} />
         <div className={classes.Sentence__content}>
             {
                 props.content.map(a => {
