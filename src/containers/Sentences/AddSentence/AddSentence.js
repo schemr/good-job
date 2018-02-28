@@ -96,8 +96,6 @@ class Sentences extends Component {
     }
     
     divChangeHandler = (event) => {
-        //const date = new Date();
-        //const displayDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
         let updatedControls = {
             ...this.state.normalControl,
             value: event.currentTarget.textContent,
