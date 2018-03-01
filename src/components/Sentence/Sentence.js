@@ -7,7 +7,7 @@ const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric
 
 const sentence = (props) => (
     <div className={classes.Sentence}>
-        <SentenceDate date={new Date(props.date).toLocaleDateString('ko-KR', options)} />
+        <SentenceDate date={new Date(props.date.replace(/-/g, "/")).toLocaleDateString('ko-KR', options)} />
         <div className={classes.Sentence__content}>
             {
                 props.content.map(a => {
