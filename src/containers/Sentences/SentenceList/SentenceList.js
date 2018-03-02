@@ -16,11 +16,16 @@ class SentencesList extends Component {
         this.props.history.push('/new');
     }
     render() {
+        let sentences = 
+            this.props.sentences.map(sentence => {
+                return <Sentence key={sentence.date} date={sentence.date} content={sentence.sentence} />
+            })
+        if(this.props.sentences.length === 0){
+            sentences = (<div className={classes.EmptyString}>잘한일을 등록해주세요!</div>)
+        }
         return (
             <div className={classes.Sentences}>
-                {this.props.sentences.map(sentence => {
-                    return <Sentence key={sentence.date} date={sentence.date} content={sentence.sentence} />
-                })}
+                {sentences}
                 <AddButton addedButton={this.onAddedHandler}/>
             </div>
         )
