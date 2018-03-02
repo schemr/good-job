@@ -15,7 +15,7 @@ class Sentences extends Component {
             displayDate: null,
             type: null
         },
-        sentenceMode: new Date().getDay !== 0 ? 'normal' : 'review',
+        sentenceMode: new Date().getDay == 0 ? 'normal' : 'review',
         normalControl: {
             valid: false,
             value: '',
@@ -24,13 +24,27 @@ class Sentences extends Component {
             }
         },
         reviewControls: {
+            content: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: '이번 주의 가장 잘한 일을 적어주세요'
+                },
+                label: '이번 주의 가장 잘한 일',
+                value: '',
+                valid: false,
+                validation: {
+                    required: true
+                },
+                touched: false
+            },
             fact: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: '어떤일이 있었는가요?'
+                    placeholder: '언제, 어디서, 누구와, 누구에게, 무엇을, 어떻게 쓴다'
                 },
-                label: '어떤일',
+                label: '구체적으로 어떤 일이 있었는가?',
                 value: '',
                 valid: false,
                 validation: {
@@ -42,9 +56,9 @@ class Sentences extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: '정말로 잘한일인가요?'
+                    placeholder: '왜 잘한 일일까?, 정말 잘한 일인가 쓴다'
                 },
-                label: '정말',
+                label: '정말로 잘한 일인가?',
                 value: '',
                 valid: false,
                 validation: {
@@ -56,9 +70,9 @@ class Sentences extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: '어떤 감정인가요?'
+                    placeholder: '지금 솔직한 감정에 대해서 쓴다. (기쁘다, 뿌듯하다, 걱정이다, 슬프다, 화난다..)'
                 },
-                label: '감정',
+                label: '솔직히 어떤 감정인가?',
                 value: '',
                 valid: false,
                 validation: {
@@ -70,9 +84,9 @@ class Sentences extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: '어떤 방법을 실천할까요?'
+                    placeholder: '바로 내일부터 실천할 수 있는 간단한 일을 써본다.'
                 },
-                label: '실천',
+                label: '내일부터 어떤 방법을 실천해볼까?',
                 value: '',
                 valid: false,
                 validation: {
@@ -121,7 +135,7 @@ class Sentences extends Component {
         }else{
             sentence = {
                 ...sentence,
-                content: '',
+                content: this.state.reviewControls.content.value,
                 fact: this.state.reviewControls.fact.value,
                 cause: this.state.reviewControls.cause.value,
                 emotion: this.state.reviewControls.emotion.value,
