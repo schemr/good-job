@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './SentenceContent.scss';
+import classes from './SentenceContentNormal.scss';
 
 const sentenceContent = (props) => (
     <div className={classes.Content}>

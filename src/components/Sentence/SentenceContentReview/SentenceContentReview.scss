@@ -1,0 +1,19 @@
+.Content{
+    &__title{
+        font-weight: bold;
+        font-size: 13px;
+        text-align: center;
+    }
+    &__text{
+        text-align: center;
+        &::before, &::after{
+            content: ' " '
+        }
+    }
+}
+.List{
+    &__title{
+        font-weight: bold;
+        font-size: 13px;
+    }
+}
