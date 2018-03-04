@@ -15,7 +15,7 @@ class Sentences extends Component {
             displayDate: null,
             type: null
         },
-        sentenceMode: new Date().getDay !== 0 ? 'normal' : 'review',
+        sentenceMode: new Date().getDay() !== 0 ? 'normal' : 'review',
         normalControl: {
             valid: false,
             value: '',
