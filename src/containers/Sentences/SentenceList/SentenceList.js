@@ -11,6 +11,9 @@ class SentencesList extends Component {
     componentDidMount() {
         this.props.onFetchSentences(this.props.token, this.props.userId);
     }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return nextProps.sentences !== this.props.sentences
+    // }
     onAddedHandler = () => {
         this.props.onAddSentence();
         this.props.history.push('/new');
@@ -20,7 +23,7 @@ class SentencesList extends Component {
             this.props.sentences.map(sentence => {
                 return <Sentence key={sentence.date} date={sentence.date} content={sentence.sentence} />
             })
-        if(this.props.sentences.length === 0){
+        if(this.props.sentences.length === 0 && this.props.fetched){
             sentences = (<div className={classes.EmptyString}>잘한일을 등록해주세요!</div>)
         }
         return (
@@ -35,6 +38,7 @@ class SentencesList extends Component {
 const mapStateToProps = state => {
     return {
         sentences: state.sentence.sentences,
+        fetched: state.sentence.fetched,
         token: state.auth.token,
         userId: state.auth.userId
     }

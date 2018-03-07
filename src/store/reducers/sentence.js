@@ -2,6 +2,7 @@ import { SET_SENTENCES, ADD_INIT, ADD_SENTENCE_SUCCESS } from '../actions/action
 
 const initialState = {
     sentences: [],
+    fetched: false,
     addedSentence: false
 };
 
@@ -10,6 +11,7 @@ const reducer = (state=initialState, action) => {
         case SET_SENTENCES:
             return {
                 ...state,
+                fetched: true,
                 sentences: action.sentences
             };
         case ADD_INIT:
