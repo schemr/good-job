@@ -11,7 +11,7 @@ import validation from '../../utility/validation';
 
 class Auth extends Component {
     state = {
-        authMode: 'signup',
+        authMode: 'login',
         controls: {
             email: {
                 elementType: 'input',
@@ -92,7 +92,7 @@ class Auth extends Component {
     }
     changeAuthModeHandler = () => {
         this.setState({
-            authMode: 'login'
+            authMode: 'signup'
         })
     }
     render() {
@@ -141,7 +141,7 @@ class Auth extends Component {
                 </form>
                 { this.state.authMode === 'signup' ?
                     <div onClick={this.changeAuthModeHandler}>
-                        이미 가입하셨으면 로그인해주세요
+                        아직 가입하지 않으셨다면 가입해주세요
                     </div>
                     : null
                 }
