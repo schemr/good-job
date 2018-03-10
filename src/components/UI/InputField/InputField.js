@@ -1,15 +1,15 @@
 import React from 'react';
 import classes from './InputField.scss';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 
 const inputField = (props) => {
     let inputElement = null;
-    const inputClasses = [classes.InputElement]
-    if(props.invalid && props.touched){
-        inputClasses.push(classes.Invalid);
-    }
+    const inputClasses = [classes.InputElement, classes.textField]
+
     switch(props.elementType) {
         case('input'):
-            inputElement = <input className={inputClasses.join(' ')} {...props.elementConfig} value={props.value} onChange={props.changed} />
+            inputElement = <Input className={inputClasses.join(' ')} {...props.elementConfig} value={props.value} onChange={props.changed} error={props.invalid && props.touched} />
             break;
         case('textarea'):
             inputElement = <textarea className={inputClasses.join(' ')} {...props.elementConfig} value={props.value} onChange={props.changed} />
@@ -26,13 +26,13 @@ const inputField = (props) => {
             )
             break;
         default: 
-            inputElement = <input className={inputClasses.join(' ')} {...props.elementConfig} value={props.value} onChange={props.changed} />
+            inputElement = <Input className={inputClasses.join(' ')} {...props.elementConfig} value={props.value} onChange={props.changed} />
     }
     return(
-        <div className={classes.Input}>
-            <label className={classes.Label}>{props.label}</label>
+        <FormControl>
+            <InputLabel htmlFor={props.elementConfig.placeholder} error={props.invalid && props.touched}>{props.elementConfig.placeholder}</InputLabel>
             {inputElement}
-        </div>
+        </FormControl>
     )
 };
 
