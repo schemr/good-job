@@ -125,6 +125,7 @@ class Auth extends Component {
             <Button 
                 color="primary"
                 variant="raised"
+                onClick={this.submitHandler}
                 disabled={!this.state.controls.email.valid || !this.state.controls.password.valid || (!this.state.controls.confirmPassword.valid && this.state.authMode === 'signup')}>SUBMIT</Button>
         );
         if(this.props.isLoading) {

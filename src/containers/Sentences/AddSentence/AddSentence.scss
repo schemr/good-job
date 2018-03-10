@@ -22,6 +22,9 @@
 .ButtonSet {
     text-align: right;
     margin-right: 40px;
+    button{
+        margin-right: 10px;
+    }
 }
 
 [contenteditable=true]:empty:before{

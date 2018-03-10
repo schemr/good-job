@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import classes from './AddSentence.scss';
 import { addSentence } from '../../../store/actions/index';
-import Button from '../../../components/UI/Button/Button';
+import Button from 'material-ui/Button';
 import InputField from '../../../components/UI/InputField/InputField';
 import validation from '../../../utility/validation';
 
@@ -181,11 +181,11 @@ class Sentences extends Component {
                 {form}
                 <div className={classes.ButtonSet}>
                     <Button 
-                        btnType="Success" 
-                        className={classes.Button} 
-                        clicked={this.submitHandler}
+                        color="primary"
+                        variant="raised" 
+                        onClick={this.submitHandler}
                         disabled={((!this.state.reviewControls.fact.valid || !this.state.reviewControls.cause.valid || !this.state.reviewControls.emotion.valid || !this.state.reviewControls.action.valid) && this.state.sentenceMode === 'review') || (!this.state.normalControl.valid && this.state.sentenceMode === 'normal')}>저장</Button>
-                    <Button btnType="Danger" clicked={this.cancleHandler}>취소</Button>
+                    <Button variant="raised" onClick={this.cancleHandler}>취소</Button>
                 </div>
             </div>
         );
