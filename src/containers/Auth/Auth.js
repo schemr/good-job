@@ -4,7 +4,9 @@ import classes from './Auth.scss';
 import { connect } from 'react-redux';
 import { tryAuth } from '../../store/actions/index';
 
-import InputField from '../../components/UI/InputField/InputField';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Button from '../../components/UI/Button/Button';
 import validation from '../../utility/validation';
@@ -113,14 +115,10 @@ class Auth extends Component {
             }
         }
         let form = formElementArray.map(formElement => (
-            <InputField
-                key={formElement.id}
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={!formElement.config.valid}
-                touched={formElement.config.touched}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)} />
+            <FormControl key={formElement.id} fullWidth margin="normal">
+                <InputLabel htmlFor={formElement.config.elementConfig.placeholder} error={!formElement.config.valid && formElement.config.touched}>{formElement.config.elementConfig.placeholder}</InputLabel>
+                <Input type={formElement.config.elementConfig.type} value={formElement.config.value} onChange={(event) => this.inputChangedHandler(event, formElement.id)} error={!formElement.config.valid && formElement.config.touched} />
+            </FormControl>
         ));
 
         let submitButton = (
@@ -139,7 +137,7 @@ class Auth extends Component {
                     {form}
                     {submitButton}
                 </form>
-                { this.state.authMode === 'signup' ?
+                { this.state.authMode === 'login' ?
                     <div onClick={this.changeAuthModeHandler}>
                         아직 가입하지 않으셨다면 가입해주세요
                     </div>
