@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import classes from './SentenceList.scss'
 import Sentence from '../../../components/Sentence/Sentence';
-import AddButton from '../../../components/UI/AddButton/AddButton';
+import Button from 'material-ui/Button';
+import AddIcon from 'material-ui-icons/Add';
 import { connect } from 'react-redux';
 
 import { getSentences, addInit } from '../../../store/actions/index';
@@ -29,7 +30,11 @@ class SentencesList extends Component {
         return (
             <div className={classes.Sentences}>
                 {sentences}
-                <AddButton addedButton={this.onAddedHandler}/>
+                <div className={classes.AddButton}>
+                    <Button variant="fab" color="primary" aria-label="add" onClick={this.onAddedHandler}>
+                        <AddIcon />
+                    </Button>
+                </div>
             </div>
         )
     }

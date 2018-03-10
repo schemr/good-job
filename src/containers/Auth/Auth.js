@@ -6,9 +6,9 @@ import { tryAuth } from '../../store/actions/index';
 
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import Button from 'material-ui/Button';
 
 import Spinner from '../../components/UI/Spinner/Spinner';
-import Button from '../../components/UI/Button/Button';
 import validation from '../../utility/validation';
 
 class Auth extends Component {
@@ -123,7 +123,8 @@ class Auth extends Component {
 
         let submitButton = (
             <Button 
-                btnType="Success" 
+                color="primary"
+                variant="raised"
                 disabled={!this.state.controls.email.valid || !this.state.controls.password.valid || (!this.state.controls.confirmPassword.valid && this.state.authMode === 'signup')}>SUBMIT</Button>
         );
         if(this.props.isLoading) {
@@ -133,18 +134,20 @@ class Auth extends Component {
         return (
             <div className={classes.Container}>
                 <h1>{this.state.authMode === 'signup' ? 'SINGUP' : 'LOGIN'}</h1>
-                <form onSubmit={this.submitHandler}>
+                <form className={classes.Form} onSubmit={this.submitHandler}>
                     {form}
                     {submitButton}
                 </form>
                 { this.state.authMode === 'login' ?
-                    <div onClick={this.changeAuthModeHandler}>
+                    <div className={classes.Text} onClick={this.changeAuthModeHandler}>
                         아직 가입하지 않으셨다면 가입해주세요
                     </div>
                     : null
                 }
-                <Button btnType="Facebook">Facebook</Button>
-                <Button btnType="Google">Google</Button>
+                <div className={classes.BtnWrapper}>
+                    <Button fullWidth color="primary" variant="raised">Facebook</Button>
+                    <Button fullWidth color="secondary" variant="raised">Google</Button>
+                </div>
             </div>
         )
     }
