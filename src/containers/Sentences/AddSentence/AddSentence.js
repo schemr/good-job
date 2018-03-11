@@ -120,7 +120,7 @@ class Sentences extends Component {
     }
     submitHandler = () => {
         const date = new Date();
-        const displayDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+        const displayDate = date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + date.getDate()).slice(-2);
 
         let sentence = {
             date: date,
