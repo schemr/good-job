@@ -4,7 +4,8 @@ import { Redirect } from 'react-router-dom';
 import classes from './AddSentence.scss';
 import { addSentence } from '../../../store/actions/index';
 import Button from 'material-ui/Button';
-import InputField from '../../../components/UI/InputField/InputField';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 import validation from '../../../utility/validation';
 
 class Sentences extends Component {
@@ -163,15 +164,14 @@ class Sentences extends Component {
                 });
             }
             form = formElementArray.map(formElement => (
-                <InputField
-                    label={formElement.config.label}
-                    key={formElement.id}
-                    elementType={formElement.config.elementType}
-                    elementConfig={formElement.config.elementConfig}
-                    value={formElement.config.value}
-                    invalid={!formElement.config.valid}
-                    touched={formElement.config.touched}
-                    changed={(event) => this.inputChangedHandler(event, formElement.id)} />
+                <FormControl key={formElement.id} fullWidth margin="normal">
+                    <InputLabel htmlFor={formElement.config.elementConfig.placeholder} error={!formElement.config.valid && formElement.config.touched}>{formElement.config.label}</InputLabel>
+                    <Input 
+                        type={formElement.config.elementConfig.type} 
+                        value={formElement.config.value} 
+                        onChange={(event) => this.inputChangedHandler(event, formElement.id)} 
+                        error={!formElement.config.valid && formElement.config.touched} />
+                </FormControl>
             ));
         }
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
