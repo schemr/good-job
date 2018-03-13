@@ -7,9 +7,22 @@ import { tryAuth } from '../../store/actions/index';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
 
 import Spinner from '../../components/UI/Spinner/Spinner';
 import validation from '../../utility/validation';
+
+const styles = {
+    googleBtn: {
+        backgroundColor: '#D95040',
+        color: "#FFFFFF"
+    },
+    facebookBtn: {
+        backgroundColor: '#4967AD',
+        color: "#FFFFFF"
+    }
+}
+
 
 class Auth extends Component {
     state = {
@@ -146,8 +159,8 @@ class Auth extends Component {
                     : null
                 }
                 <div className={classes.BtnWrapper}>
-                    <Button fullWidth color="primary" variant="raised">Facebook</Button>
-                    <Button fullWidth color="secondary" variant="raised">Google</Button>
+                    <Button fullWidth className={this.props.classes.facebookBtn} variant="raised">Facebook</Button>
+                    <Button fullWidth className={this.props.classes.googleBtn} variant="raised">Google</Button>
                 </div>
             </div>
         )
@@ -166,4 +179,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Auth));

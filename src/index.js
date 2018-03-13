@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import amber from 'material-ui/colors/amber';
+import orange from 'material-ui/colors/orange';
 
 import './index.scss';
 import App from './App';
@@ -22,11 +25,22 @@ const rootReducer = combineReducers({
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const theme = createMuiTheme({
+    palette: {
+      primary: orange,
+      secondary: amber,
+    },
+    status: {
+      danger: 'orange',
+    },
+  });
 
 const appRouter = (
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <MuiThemeProvider theme={theme}>
+                <App />
+            </MuiThemeProvider>
         </BrowserRouter>
     </Provider>
 )

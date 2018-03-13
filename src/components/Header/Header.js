@@ -1,37 +1,39 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import classes from './Header.scss';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography'
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    Appbar: {
+        flexGrow: 1,
+        color: "#FFFFFF"
+    },
+    Title: {
+        textAlign: "center",
+        flex: 1,
+        fontWeight: "bold"
+    }
+  };
+  
 
 const header = (props) => (
     <div>
-        <AppBar position="static" color="primary" className={classes.Header}>
+        <AppBar color="primary" className={props.classes.Appbar}>
             <Toolbar>
                 { props.isAuth && (
                     <NavLink to="/sentences"><i className="fa fa-list-ul"></i></NavLink>
                 )}
-                <Typography variant="title" color="inherit" className={classes.Title}>
+                <Typography variant="title" color="inherit" className={props.classes.Title}>
                     Good Job!
                 </Typography>
                 { props.isAuth && (
-                    <nav className={classes.Nav}>
-                        <ul>
-                            <li><NavLink to="/logout"><i className="fa fa-sign-out-alt"></i></NavLink></li>
-                        </ul>
-                    </nav>
+                    <NavLink to="/logout"><i className="fa fa-sign-out-alt"></i></NavLink>
                 )}
             </Toolbar>
         </AppBar>
-        {/* {props.isAuth ? <NavLink to="/sentences"><i className="fa fa-list-ul"></i></NavLink> : null}
-        <div className={classes.Title}>Good Job!</div>
-        {props.isAuth ? <nav className={classes.Nav}>
-            <ul>
-                <li><NavLink to="/logout"><i className="fa fa-sign-out-alt"></i></NavLink></li>
-            </ul>
-        </nav> : null} */}
     </div>
 );
 
-export default header;
+export default withStyles(styles)(header);

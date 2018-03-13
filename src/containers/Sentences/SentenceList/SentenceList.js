@@ -31,7 +31,7 @@ class SentencesList extends Component {
             <div className={classes.Sentences}>
                 {sentences}
                 <div className={classes.AddButton}>
-                    <Button variant="fab" color="primary" aria-label="add" onClick={this.onAddedHandler}>
+                    <Button variant="fab" color="secondary" aria-label="add" onClick={this.onAddedHandler}>
                         <AddIcon />
                     </Button>
                 </div>
