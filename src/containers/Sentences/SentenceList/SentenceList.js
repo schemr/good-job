@@ -3,6 +3,7 @@ import classes from './SentenceList.scss'
 import Sentence from '../../../components/Sentence/Sentence';
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
+import { CircularProgress } from 'material-ui/Progress';
 import { connect } from 'react-redux';
 
 import { getSentences, addInit } from '../../../store/actions/index';
@@ -29,7 +30,13 @@ class SentencesList extends Component {
         }
         return (
             <div className={classes.Sentences}>
-                {sentences}
+                {
+                    this.props.isLoading ? 
+                    <div className={classes.Loading}>
+                        <CircularProgress className={classes.progress} size={50} />
+                    </div> 
+                    : sentences
+                }
                 <div className={classes.AddButton}>
                     <Button variant="fab" color="secondary" aria-label="add" onClick={this.onAddedHandler}>
                         <AddIcon />
@@ -45,7 +52,8 @@ const mapStateToProps = state => {
         sentences: state.sentence.sentences,
         fetched: state.sentence.fetched,
         token: state.auth.token,
-        userId: state.auth.userId
+        userId: state.auth.userId,
+        isLoading: state.ui.isLoading
     }
 };
 
