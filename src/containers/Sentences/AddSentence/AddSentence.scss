@@ -14,13 +14,9 @@
     width: 80%;
     height: 300px;
     font-size: 20px;
+    padding: 20px;
     margin: auto;
     margin-bottom: 20px;
-    text-align: center;
-    padding-top: 100px;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
 }
 
 .ButtonSet {
@@ -34,5 +30,7 @@
 [contenteditable=true]:empty:before{
     content: attr(placeholder);
     color: #aaa;
+    text-align: center;
+    padding-top: 100px;
     display: block; /* For Firefox */
 }
