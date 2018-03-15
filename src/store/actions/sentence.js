@@ -79,6 +79,12 @@ export const addSentenceSuccess = () => {
     };
 };
 
+export const addSentenceFail = () => {
+    return {
+        type: ADD_SENTENCE_FAIL
+    };
+};
+
 export const addInit = () => {
     return {
         type: ADD_INIT
