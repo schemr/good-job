@@ -18,7 +18,7 @@ import authReducer from './store/reducers/auth';
 import sentenceReducer from './store/reducers/sentence';
 import uiReducer from './store/reducers/ui';
 
-var fire = firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 const composeEnhancers = process.env.NODE_ENV === 'development' && window.navigator.userAgent.includes('Chrome') ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
