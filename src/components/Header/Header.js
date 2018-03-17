@@ -15,12 +15,17 @@ const styles = {
         textAlign: "center",
         flex: 1,
         fontWeight: "bold"
+    },
+    Button: {
+        padding: 0,
+        color: "#FFFFFF",
+        fontSize: "15px"
     }
   };
 
 class Header extends Component {
-    onPushHandler = (e) => {
-        e.preventDefault();
+    onPushHandler = () => {
+        //e.preventDefault();
         const messaging = firebase.messaging();
         messaging.requestPermission()
         .then(function() {
@@ -39,9 +44,9 @@ class Header extends Component {
                 <AppBar color="primary" className={this.props.classes.Appbar}>
                     <Toolbar>
                         { this.props.isAuth && (
-                            <a href="#" onClick={this.onPushHandler}>
+                            <button className={this.props.classes.Button} onClick={this.onPushHandler}>
                                 <i className="fa fa-bell"></i>
-                            </a>
+                            </button>
                         )}
                         <Typography variant="title" color="inherit" className={this.props.classes.Title}>
                             Good Job!
