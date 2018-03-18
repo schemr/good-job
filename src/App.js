@@ -7,6 +7,7 @@ import SentenceList from './containers/Sentences/SentenceList/SentenceList';
 import AddSentence from './containers/Sentences/AddSentence/AddSentence';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
+import Notification from './components/Notification/Notification';
 import { authCheckState } from './store/actions/index';
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
         <Switch>
           <Route path="/sentences" component={SentenceList} />
           <Route path="/new" component={AddSentence} />
+          <Route path="/notification" component={Notification} />
           <Route path="/logout" component={Logout} />  
           <Redirect to="/sentences" />
         </Switch>

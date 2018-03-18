@@ -44,9 +44,7 @@ class Header extends Component {
                 <AppBar color="primary" className={this.props.classes.Appbar}>
                     <Toolbar>
                         { this.props.isAuth && (
-                            <button className={this.props.classes.Button} onClick={this.onPushHandler}>
-                                <i className="fa fa-bell"></i>
-                            </button>
+                            <NavLink to="/notification"><i className="fa fa-bell"></i></NavLink>
                         )}
                         <Typography variant="title" color="inherit" className={this.props.classes.Title}>
                             Good Job!
