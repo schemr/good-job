@@ -11,14 +11,11 @@ import orange from 'material-ui/colors/orange';
 import './index.scss';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import firebase from 'firebase';
-import config from './config';
+
 
 import authReducer from './store/reducers/auth';
 import sentenceReducer from './store/reducers/sentence';
 import uiReducer from './store/reducers/ui';
-
-firebase.initializeApp(config);
 
 const composeEnhancers = process.env.NODE_ENV === 'development' && window.navigator.userAgent.includes('Chrome') ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
