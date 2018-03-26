@@ -8,11 +8,16 @@ import AddSentence from './containers/Sentences/AddSentence/AddSentence';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import Notification from './components/Notification/Notification';
-import { authCheckState } from './store/actions/index';
+import { authCheckState, authSetUser } from './store/actions/index';
+import { firebase } from './firebase';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onTryAutoSignup();
+    firebase.auth.onAuthStateChanged(authUser => {
+      console.log(authUser)
+      authUser ? this.props.onAuthSetUser(authUser) : this.props.onAuthSetUser()
+    });
+    //this.props.onTryAutoSignup();
   };
 
   render() {
@@ -46,12 +51,13 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.isAuthenticated
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    onAuthSetUser: (user) => dispatch(authSetUser(user)),
     onTryAutoSignup: () => dispatch( authCheckState() )
   };
 };

@@ -4,6 +4,8 @@ import classes from './Auth.scss';
 import { connect } from 'react-redux';
 import { tryAuth } from '../../store/actions/index';
 
+import { auth } from '../../firebase';
+
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
@@ -99,11 +101,18 @@ class Auth extends Component {
     }
     submitHandler = ( event ) => {
         event.preventDefault();
-        const authData = {
-            email:this.state.controls.email.value,
-            password:this.state.controls.password.value
-        };
-        this.props.onTryAuth(authData, this.state.authMode);
+        if(this.state.authMode === 'login'){
+            auth.doSignInWithEmailAndPassword(this.state.controls.email.value, this.state.controls.password.value)
+            .then(() => {
+                this.props.history.push('/sentences');
+              })
+        }else{
+            auth.doCreateUserWithEmailAndPassword(this.state.controls.email.value, this.state.controls.password.value)
+            .then(() => {
+                this.props.history.push('/sentences');
+              })
+        }
+        //this.props.onTryAuth(authData, this.state.authMode);
     }
     changeAuthModeHandler = () => {
         this.setState({

@@ -1,6 +1,6 @@
 // Auth Actions
-export const AUTH_SET_TOKEN = 'AUTH_SET_TOKEN';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+export const AUTH_SET_USER = 'AUTH_SET_USER';
 
 // Sentence Actions
 export const SET_SENTENCES = 'SET_SENTENCES';
