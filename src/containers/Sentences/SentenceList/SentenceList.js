@@ -6,12 +6,34 @@ import AddIcon from 'material-ui-icons/Add';
 import { CircularProgress } from 'material-ui/Progress';
 import { connect } from 'react-redux';
 
-import { getSentences, addInit } from '../../../store/actions/index';
+import { db } from '../../../firebase';
+
+import { getSentences, setSentence, addInit } from '../../../store/actions/index';
 
 
 class SentencesList extends Component {
     componentDidMount() {
-        this.props.onFetchSentences(this.props.token, this.props.userId);
+        db.onceGetSentences(this.props.user.uid).then(snapshot => {
+            const data = snapshot.val()
+            const fetchedData = [];
+            for ( let key in data ) {
+                const fetchedSentence = [];
+                for( let k in data[key]){
+                    fetchedSentence.push( {
+                        ...data[key][k],
+                        id: k
+                    });
+                }
+                fetchedData.push({
+                    sentence: fetchedSentence,
+                    date: key
+                })
+            }
+            console.log(fetchedData)
+            this.props.onSetSentence(fetchedData.reverse())
+            //dispatch(setSentence(fetchedData.reverse()));
+        })
+        // this.props.onFetchSentences(this.props.token, this.props.userId);
     }
     // shouldComponentUpdate(nextProps, nextState) {
     //     return nextProps.sentences !== this.props.sentences
@@ -53,6 +75,7 @@ const mapStateToProps = state => {
         fetched: state.sentence.fetched,
         token: state.auth.token,
         userId: state.auth.userId,
+        user: state.auth.user,
         isLoading: state.ui.isLoading
     }
 };
@@ -60,6 +83,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onFetchSentences: (token, userId) => dispatch(getSentences(token, userId)),
+        onSetSentence: (sentences) => dispatch(setSentence(sentences)),
         onAddSentence: () => dispatch(addInit())
     }
 };
