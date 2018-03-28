@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import classes from './AddSentence.scss';
-import { addSentence } from '../../../store/actions/index';
+import { db } from '../../../firebase';
 import Button from 'material-ui/Button';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
@@ -126,7 +125,7 @@ class Sentences extends Component {
             date: date,
             displayDate: displayDate,
             type: this.state.sentenceMode,
-            userId: this.props.userId
+            userId: this.props.user.uid
         };
         if(this.state.sentenceMode === 'normal') {
             sentence = {
@@ -143,8 +142,10 @@ class Sentences extends Component {
                 action: this.state.reviewControls.action.value,
             }
         }
-        
-        this.props.onSaveSentence(sentence, this.props.userId, this.props.token)
+        db.doCreateSentence(this.props.user.uid, displayDate, sentence)
+            .then(()=> {
+                this.props.history.push('/sentences')
+            })
     }
     cancleHandler = () => {
         this.props.history.goBack();
@@ -175,7 +176,8 @@ class Sentences extends Component {
             ));
         }
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        let sentence = (
+
+        return (
             <div>
                 <h2 className={classes.Date}>{new Date().toLocaleDateString('ko-KR', options)}</h2>
                 {form}
@@ -189,27 +191,15 @@ class Sentences extends Component {
                 </div>
             </div>
         );
-
-        if(this.props.addedSentence) {
-            sentence = <Redirect to="/sentences" />
-        }
-        
-        return sentence
     }
 };
 
 const mapStateToProps = state => {
     return {
-        userId: state.auth.userId,
+        user: state.auth.user,
         token: state.auth.token,
         addedSentence: state.sentence.addedSentence
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onSaveSentence: (sentence, userId, token) => dispatch(addSentence(sentence, userId, token))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sentences);
+export default connect(mapStateToProps)(Sentences);

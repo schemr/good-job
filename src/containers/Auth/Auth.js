@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classes from './Auth.scss';
 
 import { connect } from 'react-redux';
-import { tryAuth } from '../../store/actions/index';
 
 import { auth } from '../../firebase';
 
@@ -112,7 +111,6 @@ class Auth extends Component {
                 this.props.history.push('/sentences');
               })
         }
-        //this.props.onTryAuth(authData, this.state.authMode);
     }
     changeAuthModeHandler = () => {
         this.setState({
@@ -182,10 +180,4 @@ const mapStateToProps = state => {
     }
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode))
-    }
-}
-
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Auth));
+export default withStyles(styles)(connect(mapStateToProps)(Auth));

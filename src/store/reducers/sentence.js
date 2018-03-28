@@ -1,9 +1,7 @@
-import { SET_SENTENCES, ADD_INIT, ADD_SENTENCE_SUCCESS, ADD_SENTENCE_FAIL } from '../actions/actionTypes';
+import { SET_SENTENCES } from '../actions/actionTypes';
 
 const initialState = {
-    sentences: [],
-    fetched: false,
-    addedSentence: false
+    sentences: []
 };
 
 const reducer = (state=initialState, action) => {
@@ -11,23 +9,7 @@ const reducer = (state=initialState, action) => {
         case SET_SENTENCES:
             return {
                 ...state,
-                fetched: true,
                 sentences: action.sentences
-            };
-        case ADD_INIT:
-            return {
-                ...state,
-                addedSentence: false
-            };
-        case ADD_SENTENCE_SUCCESS:
-            return {
-                ...state,
-                addedSentence: true
-            };
-        case ADD_SENTENCE_FAIL:
-            return {
-                ...state,
-                addedSentence: true
             };
         default:
             return state;

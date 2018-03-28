@@ -8,16 +8,14 @@ import AddSentence from './containers/Sentences/AddSentence/AddSentence';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import Notification from './components/Notification/Notification';
-import { authCheckState, authSetUser } from './store/actions/index';
+import { authSetUser } from './store/actions/index';
 import { firebase } from './firebase';
 
 class App extends Component {
   componentDidMount() {
     firebase.auth.onAuthStateChanged(authUser => {
-      console.log(authUser)
-      authUser ? this.props.onAuthSetUser(authUser) : this.props.onAuthSetUser()
+      authUser ? this.props.onAuthSetUser(authUser) : this.props.onAuthSetUser(null)
     });
-    //this.props.onTryAutoSignup();
   };
 
   render() {
@@ -28,7 +26,7 @@ class App extends Component {
         <Redirect to="/" />
       </Switch>
     )
-    if(this.props.isAuthenticated) {
+    if(this.props.user) {
       routes = (
         <Switch>
           <Route path="/sentences" component={SentenceList} />
@@ -51,14 +49,13 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    user: state.auth.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuthSetUser: (user) => dispatch(authSetUser(user)),
-    onTryAutoSignup: () => dispatch( authCheckState() )
+    onAuthSetUser: (user) => dispatch(authSetUser(user))
   };
 };
 

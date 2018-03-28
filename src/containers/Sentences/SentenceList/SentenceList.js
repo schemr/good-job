@@ -8,38 +8,40 @@ import { connect } from 'react-redux';
 
 import { db } from '../../../firebase';
 
-import { getSentences, setSentence, addInit } from '../../../store/actions/index';
+import { setSentence} from '../../../store/actions/index';
 
 
 class SentencesList extends Component {
-    componentDidMount() {
-        db.onceGetSentences(this.props.user.uid).then(snapshot => {
-            const data = snapshot.val()
-            const fetchedData = [];
-            for ( let key in data ) {
-                const fetchedSentence = [];
-                for( let k in data[key]){
-                    fetchedSentence.push( {
-                        ...data[key][k],
-                        id: k
-                    });
-                }
-                fetchedData.push({
-                    sentence: fetchedSentence,
-                    date: key
-                })
-            }
-            console.log(fetchedData)
-            this.props.onSetSentence(fetchedData.reverse())
-            //dispatch(setSentence(fetchedData.reverse()));
-        })
-        // this.props.onFetchSentences(this.props.token, this.props.userId);
+    state = {
+        isLoading: true,
+        isEmpty: false
     }
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     return nextProps.sentences !== this.props.sentences
-    // }
+
+    componentDidMount() {
+        db.onceGetSentences(this.props.user.uid)
+            .then(snapshot => {
+                const data = snapshot.val()
+                const fetchedData = [];
+                for ( let key in data ) {
+                    const fetchedSentence = [];
+                    for( let k in data[key]){
+                        fetchedSentence.push( {
+                            ...data[key][k],
+                            id: k
+                        });
+                    }
+                    fetchedData.push({
+                        sentence: fetchedSentence,
+                        date: key
+                    })
+                }
+                this.props.onSetSentence(fetchedData.reverse())
+                this.setState({
+                    isLoading: false
+                })
+            })
+    }
     onAddedHandler = () => {
-        this.props.onAddSentence();
         this.props.history.push('/new');
     }
     render() {
@@ -47,13 +49,13 @@ class SentencesList extends Component {
             this.props.sentences.map(sentence => {
                 return <Sentence key={sentence.date} date={sentence.date} content={sentence.sentence} />
             })
-        if(this.props.sentences.length === 0 && this.props.fetched){
+        if(this.state.isEmpty){
             sentences = (<div className={classes.EmptyString}>잘한일을 등록해주세요!</div>)
         }
         return (
             <div className={classes.Sentences}>
                 {
-                    this.props.isLoading ? 
+                    this.state.isLoading ? 
                     <div className={classes.Loading}>
                         <CircularProgress className={classes.progress} size={50} />
                     </div> 
@@ -72,19 +74,13 @@ class SentencesList extends Component {
 const mapStateToProps = state => {
     return {
         sentences: state.sentence.sentences,
-        fetched: state.sentence.fetched,
-        token: state.auth.token,
-        userId: state.auth.userId,
-        user: state.auth.user,
-        isLoading: state.ui.isLoading
+        user: state.auth.user
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchSentences: (token, userId) => dispatch(getSentences(token, userId)),
         onSetSentence: (sentences) => dispatch(setSentence(sentences)),
-        onAddSentence: () => dispatch(addInit())
     }
 };
 

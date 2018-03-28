@@ -3,7 +3,9 @@ import { db } from './firebase';
 // Sentences API
 
 export const doCreateSentence = (id, date, sentence) => {
-    db.ref(`sentences/${id}/&{date}`).set(sentence)
+    // Get a key for a new Post.
+    const newPostKey = db.ref('sentences/'+id+'/'+date).push().key;
+    return db.ref('sentences/'+id+'/'+date+'/'+newPostKey).update(sentence)
 };
 
 export const onceGetSentences = (id) => 
