@@ -2,14 +2,29 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Layout from './hoc/Layout/Layout';
+import asyncComponent from './hoc/asyncComponent/asyncComponent';
+
 import Introduce from './components/Introduce/Introduce';
-import SentenceList from './containers/Sentences/SentenceList/SentenceList';
-import AddSentence from './containers/Sentences/AddSentence/AddSentence';
-import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
-import Notification from './components/Notification/Notification';
+
 import { authSetUser } from './store/actions/index';
 import { firebase } from './firebase';
+
+const asyncSentenceList = asyncComponent(() => {
+  return import('./containers/Sentences/SentenceList/SentenceList.js' /* webpackChunkName: "sentences" */)
+});
+
+const asyncAddSentece = asyncComponent(() => {
+  return import('./containers/Sentences/AddSentence/AddSentence.js' /* webpackChunkName: "addsentence" */)
+});
+
+const asyncAuth = asyncComponent(() => {
+  return import('./containers/Auth/Auth.js' /* webpackChunkName: "auth" */)
+});
+
+const asyncNotification = asyncComponent(() => {
+  return import('./components/Notification/Notification.js' /* webpackChunkName: "notification" */)
+});
 
 class App extends Component {
   componentDidMount() {
@@ -21,7 +36,7 @@ class App extends Component {
   render() {
     let routes = (
       <Switch>
-        <Route path="/auth" component={Auth} />
+        <Route path="/auth" component={asyncAuth} />
         <Route path="/" exact component={Introduce} />
         <Redirect to="/" />
       </Switch>
@@ -29,9 +44,9 @@ class App extends Component {
     if(this.props.user) {
       routes = (
         <Switch>
-          <Route path="/sentences" component={SentenceList} />
-          <Route path="/new" component={AddSentence} />
-          <Route path="/notification" component={Notification} />
+          <Route path="/sentences" component={asyncSentenceList} />
+          <Route path="/new" component={asyncAddSentece} />
+          <Route path="/notification" component={asyncNotification} />
           <Route path="/logout" component={Logout} />  
           <Redirect to="/sentences" />
         </Switch>
